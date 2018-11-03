@@ -8,7 +8,8 @@
 
 require_once __DIR__ . '/autoload.php';
 
-$_GET['s'] = '/bilibili/user/video/481169';
+//$_GET['s'] = '/bilibili/user/video/481169';
+error_reporting(0);
 
 /*
  * Parse Query String Start
@@ -65,8 +66,8 @@ if (isset($data))
     {
         //var_dump($exception->getTrace());
     }
-
-    var_dump($result);
+    header('Content-Type: text/xml; charset=utf-8');
+    echo $result;
     file_put_contents(__DIR__ . '/../data.xml',$result);
 } else
     die('路由地址错误');

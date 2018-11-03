@@ -12,7 +12,7 @@ class Config
 {
     public static function getConfig()
     {
-        $data = parse_ini_file(__DIR__ . '/../../.env.example');
+        $data = parse_ini_file(__DIR__ . '/../../.env',true);
 
         return $data;
     }

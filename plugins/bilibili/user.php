@@ -17,9 +17,7 @@ class user
     public $_info = [
         'routes' => [
             'user/video/:uid' => 'video',
-            'user/article/:uid' => 'article',
             'user/dynamic/:uid' => 'dynamic',
-            'user/coin/:uid' => 'coin',
         ],
     ];
 
@@ -55,7 +53,7 @@ class user
             $user = (new user)->getUserData($uid);
 
             $list = [
-                'title' => $user['name'] . ' 的哔哩哔哩投稿',
+                'title' => '「' . $user['name'] . '」的哔哩哔哩投稿',
                 'link' => "https://space.bilibili.com/{$uid}/#/video",
                 'description' => "签名: {$user['sign']}",
                 'image' => [
@@ -78,23 +76,55 @@ class user
 
             return XML::toRSS($list);
         } else
-            throw new Exception("[BiliBili] UID: {$uid} 个人投稿获取失败",'error');
-
-        //var_dump($data);
+            throw new Exception("[BiliBili] UID: {$uid} 视频投稿获取失败",'error');
     }
 
-    public static function article($uid)
-    {
-
-    }
 
     public static function dynamic($uid)
     {
+        $curl = new Curl();
+        $curl->setReferrer("https://space.bilibili.com/{$uid}/");
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
+        $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
 
-    }
+        $data = json_decode(json_encode($curl->get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid={$uid}")),true);
 
-    public static function coin($uid)
-    {
-        return $uid;
+        if (is_array($data) && $data['code'] == 0)
+        {
+            $user = (new user)->getUserData($uid);
+
+            $list = [
+                'title' => '「' . $user['name'] . '」的哔哩哔哩动态',
+                'link' => "https://space.bilibili.com/{$uid}/#/dynamic",
+                'description' => "签名: {$user['sign']}",
+                'image' => [
+                    'url' => $user['face'],
+                    'title' => 'face',
+                    'src' => $user['face'],
+                ],
+                'items' => [],
+            ];
+
+            foreach ($data['data']['cards'] as $card)
+            {
+                $tmp = json_decode($card['card'],true);
+                $img = '';
+                foreach ($tmp['item']['pictures'] as $picture)
+                {
+                    $img .= "<img referrerpolicy=\"no-referrer\" src=\"{$picture['img_src']}\"><br>";
+                }
+                if ($img != '') $img = substr($img,0,-4);
+
+                $list['items'][] = [
+                    'title' => (isset($tmp['item']['title'])) ? $tmp['item']['title'] : ((isset($tmp['title'])) ? $tmp['title'] : json_decode($tmp['origin'],true)['title']),
+                    'link' => "https://t.bilibili.com/{$card['desc']['dynamic_id']}",
+                    'date' => $card['desc']['timestamp'],
+                    'description' => (isset($tmp['item']['description'])) ? $tmp['item']['description'] : ((isset($tmp['desc'])) ? $tmp['desc'] : $tmp['item']['content']) . $img,
+                ];
+            }
+
+            return XML::toRSS($list);
+        } else
+            throw new Exception("[BiliBili] UID: {$uid} 动态获取失败",'error');
     }
 }
