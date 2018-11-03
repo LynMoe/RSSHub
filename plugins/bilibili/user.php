@@ -9,6 +9,7 @@
 namespace RSSHub\Plugins\bilibili;
 
 use Curl\Curl;
+use RSSHub\Lib\Cache;
 use RSSHub\Lib\Exception;
 use RSSHub\Lib\XML;
 
@@ -23,16 +24,24 @@ class user
 
     protected function getUserData($uid)
     {
-        $curl = new Curl();
-        $curl->setReferrer("https://space.bilibili.com/{$uid}/");
-        $curl->setHeader('Content-Type','application/x-www-form-urlencoded');
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
-        $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
-        $data = $curl->post("https://space.bilibili.com/ajax/member/GetInfo",[
-            'mid' => $uid,
-        ]);
+        $md5 = md5("https://space.bilibili.com/ajax/member/GetInfo/{$uid}");
 
-        if ($data->status == true)
+        $data = Cache::getCache($md5,function () use ($uid)
+        {
+            $curl = new Curl();
+            $curl->setReferrer("https://space.bilibili.com/{$uid}/");
+            $curl->setHeader('Content-Type','application/x-www-form-urlencoded');
+            $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
+            $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
+            $data = $curl->post("https://space.bilibili.com/ajax/member/GetInfo",[
+                'mid' => $uid,
+            ]);
+
+            return $data;
+        });
+        $data = json_decode($data,true);
+
+        if ($data['status'] == true)
         {
             return json_decode(json_encode($data),true)['data'];
         } else
@@ -41,12 +50,21 @@ class user
 
     public static function video($uid)
     {
-        $curl = new Curl();
-        $curl->setReferrer("https://space.bilibili.com/{$uid}/");
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
-        $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
+        $md5 = md5("https://space.bilibili.com/ajax/member/getSubmitVideos?mid={$uid}");
 
-        $data = json_decode(json_encode($curl->get("https://space.bilibili.com/ajax/member/getSubmitVideos?mid={$uid}")),true);
+        $data = Cache::getCache($md5,function () use ($uid)
+        {
+            $curl = new Curl();
+            $curl->setReferrer("https://space.bilibili.com/{$uid}/");
+            $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
+            $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
+
+            $data = json_decode(json_encode($curl->get("https://space.bilibili.com/ajax/member/getSubmitVideos?mid={$uid}")),true);
+
+            return $data;
+        });
+
+        $data = json_decode($data,true);
 
         if (is_array($data) && $data['status'] == true)
         {
@@ -82,12 +100,21 @@ class user
 
     public static function dynamic($uid)
     {
-        $curl = new Curl();
-        $curl->setReferrer("https://space.bilibili.com/{$uid}/");
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
-        $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
+        $md5 = md5("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid={$uid}");
 
-        $data = json_decode(json_encode($curl->get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid={$uid}")),true);
+        $data = Cache::getCache($md5,function () use ($uid)
+        {
+            $curl = new Curl();
+            $curl->setReferrer("https://space.bilibili.com/{$uid}/");
+            $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
+            $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
+
+            $data = json_decode(json_encode($curl->get("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid={$uid}")),true);
+
+            return $data;
+        });
+
+        $data = json_decode($data,true);
 
         if (is_array($data) && $data['code'] == 0)
         {
