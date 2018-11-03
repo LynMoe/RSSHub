@@ -1,0 +1,9 @@
+{
+    "require": {
+        "magicalex/write-ini-file": "1.2.4",
+        "ext-curl": "^7.2",
+        "ext-json": "^1.6",
+        "mibe/feedwriter": "^1.1",
+        "php-curl-class/php-curl-class": "^8.3"
+    }
+}
