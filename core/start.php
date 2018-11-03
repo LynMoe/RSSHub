@@ -68,7 +68,6 @@ if (isset($data))
     }
     header('Content-Type: text/xml; charset=utf-8');
     echo $result;
-    file_put_contents(__DIR__ . '/../data.xml',$result);
 } else
     die('路由地址错误');
 

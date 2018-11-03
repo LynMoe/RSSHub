@@ -3,3 +3,5 @@ vendor
 composer.lock
 .idea
 .env
+!cache/.gitplaceholder
+cache
