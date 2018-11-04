@@ -27,7 +27,7 @@ RSSHub 是一个轻量、易于扩展的 RSS 生成器，可以给任何奇奇�
 
 ### 插件格式
 
-### 基本
+#### 基本
 
 请查看 ```/plugins/example/example.php``` 文件
 
@@ -48,7 +48,7 @@ public $_info = [
 
 #### 内置方法
 
-```XML::toRSS($list)``` 是内置的函数方法，用于生成标准化的 RSS 内容，本质是 [mibe/FeedWriter](https://github.com/mibe/FeedWriter) ，开发者亦可直接使用该类库
+```RSSHub\Lib\XML::toRSS($list)``` 用于生成标准化的 RSS 内容，本质是 [mibe/FeedWriter](https://github.com/mibe/FeedWriter) ，开发者亦可直接使用该类库
   - 输入参数数组包含 `title` `description` `image` 以及 `items`
     - `image` 又包含 `url` `src` 以及 `title` ， 该参数若不需要可直接忽略
     - `items` 是内容数组 ， 格式如下
@@ -57,7 +57,30 @@ public $_info = [
       - `date` 时间戳
       - `description` 内容
 
-### 错误处理
+```RSSHub\Lib\Cache::getCache($md5,$func)``` 用于获取或新增缓存内容
+  - 输入参数
+    - `$md5` : 唯一 id ，用于区分缓存内容
+    - `$func` : callable 类型， 传递获取缓存内容的函数方法，无参数
+  - 缓存时间: 默认 5 分钟
+  - 使用方法: 如下图
+```php
+use RSSHub\Lib\Cache;
+$data = Cache::getCache($md5,function () use ($var1)
+        {
+            $curl = new Curl();
+            $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
+            $curl->setOpt(CURLOPT_SSL_VERIFYHOST,0);
+            $data = json_decode(json_encode($curl->get("https://xx.xx/{$var1}")),true);
+            return $data;
+        });
+```
+
+```Curl\Curl``` CURL 方法，本质为 [php-curl-class/php-curl-class](https://github.com/php-curl-class/php-curl-class)
+  - 文档: [Quick start and examples](https://github.com/php-curl-class/php-curl-class#quick-start-and-examples)
+
+
+
+#### 错误处理
 
 若在处理过程中遇到错误，直接抛出 `RSSHub\Lib\Exception` 异常即可，第一位输入参数为消息，第二位为等级(可选 `warning` 以及 `error`)
 
@@ -71,3 +94,7 @@ public $_info = [
 ```nginx
 rewrite ^(.*)$ /index.php?s=$1 last;
 ```
+
+## Demo
+
+[演示站](https://rss.xiaolin.in)，可随意使用 (有大佬帮忙写个首页前端嘛
