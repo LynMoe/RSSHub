@@ -6,10 +6,10 @@
  * Time: 5:55 PM
  */
 
-if (!isset($_GET['s']))
-    die('非法操作');
-
-if (!is_dir(__DIR__ . '/vendor') || !file_exists(__DIR__ . '.env'))
-    require_once __DIR__ . '/core/start.php';
+if (is_dir(__DIR__ . '/vendor') && file_exists(__DIR__ . '.env'))
+    if (!isset($_GET['s']))
+        die(file_get_contents(__DIR__ . '/view/homepage.html'));
+    else
+        require_once __DIR__ . '/core/start.php';
 else
-    die('请先完成安装.');
+    die(file_get_contents(__DIR__ . '/view/notinstalled.html'));
