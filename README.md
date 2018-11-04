@@ -69,7 +69,5 @@ public $_info = [
 2.  `composer install`
 3.  配置伪静态规则 (nginx 规则如下)
 ```nginx
-if (!-e $request_filename) {
-    rewrite ^(.*)$ /index.php?s=$1 last;
-}
+rewrite ^(.*)$ /index.php?s=$1 last;
 ```
