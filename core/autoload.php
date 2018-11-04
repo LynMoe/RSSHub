@@ -13,9 +13,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  */
 
 $models = [
-    'Sql',
     'Cache',
-    'Storage',
     'Exception',
     'XML',
     'Config',
