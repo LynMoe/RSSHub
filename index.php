@@ -6,7 +6,7 @@
  * Time: 5:55 PM
  */
 
-if (is_dir(__DIR__ . '/vendor') && file_exists(__DIR__ . '.env'))
+if (is_dir(__DIR__ . '/vendor') && file_exists(__DIR__ . '/.env'))
     if (!isset($_GET['s']))
         die(file_get_contents(__DIR__ . '/view/homepage.html'));
     else

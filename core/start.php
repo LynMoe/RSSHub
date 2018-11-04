@@ -16,7 +16,7 @@ error_reporting(0);
 
 $query = explode('/',$_GET['s']);
 
-if (isset($query[1]) && is_array(RH_ROUTES[$query[1]])) //TODO: Change `is_array` to `isset` because of PHPStorm's bug.
+if (isset($query[1]) && isset(RH_ROUTES[$query[1]])) //TODO: Change `is_array` to `isset` because of PHPStorm's bug.
 {
     $group = RH_ROUTES[$query[1]];
     $count = 0;
