@@ -19,7 +19,7 @@ class Cache
     {
         if (file_exists(__DIR__ . '/../../cache/' . $md5))
         {
-            if ((filectime(__DIR__ . '/../../cache' . $md5) - time()) > 60*5)
+            if ((filemtime(__DIR__ . '/../../cache' . $md5) - time()) > 60*5)
                 self::updateCache($md5,$func());
         } else
             self::updateCache($md5,$func());
