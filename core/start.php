@@ -8,7 +8,6 @@
 
 require_once __DIR__ . '/autoload.php';
 
-//$_GET['s'] = '/bilibili/user/video/481169';
 error_reporting(0);
 
 /*
@@ -55,21 +54,36 @@ if (isset($query[1]) && is_array(RH_ROUTES[$query[1]])) //TODO: Change `is_array
 if (isset($data))
 {
     if (count($data['param']) > count($data['data']))
-        die('参数错误');
+        die(\RSSHub\Lib\XML::toRSS([
+            'title' => 'RSSHub Error',
+            'description' => '[' . strtoupper("ERROR") . '] ' . '参数错误',
+            'link' => \RSSHub\Lib\Config::getConfig()['general']['siteURL'],
+            'items' => [],
+        ]));
 
     define('RH_ROUTE',$data);
 
     try
     {
         $result = call_user_func_array($data['handler'],$data['data']);
-    } catch (\RSSHub\Lib\Exception $exception)
+    } catch (Exception $exception)
     {
-        //var_dump($exception->getTrace());
+        die(\RSSHub\Lib\XML::toRSS([
+            'title' => 'RSSHub Error',
+            'description' => '[' . strtoupper("ERROR") . '] ' . $exception->getTraceAsString(),
+            'link' => \RSSHub\Lib\Config::getConfig()['general']['siteURL'],
+            'items' => [],
+        ]));
     }
     header('Content-Type: text/xml; charset=utf-8');
     echo $result;
 } else
-    die('路由地址错误');
+    die(\RSSHub\Lib\XML::toRSS([
+        'title' => 'RSSHub Error',
+        'description' => '[' . strtoupper("ERROR") . '] ' . '路由错误',
+        'link' => \RSSHub\Lib\Config::getConfig()['general']['siteURL'],
+        'items' => [],
+    ]));
 
 /*
  * Parse Query String Start
