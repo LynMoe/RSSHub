@@ -1,7 +1,7 @@
 <p align="center">
 <img src="https://i.imgur.com/NZpRScX.png" alt="RSSHub" width="100">
 </p>
-<h1 align="center">RSSHub<small> PHP Ver.</small></h1>
+<h1 align="center">RSSHub PHP Ver.</h1>
 
 > 🍰 万物皆可 RSS
 
@@ -11,11 +11,15 @@ RSSHub 是一个轻量、易于扩展的 RSS 生成器，可以给任何奇奇�
 
 这里是[她](https://github.com/DIYgod/RSSHub)的 PHP 版本，开坑就是因为 DIY 太会咕了 (x
 
+插件列表 [Plugins.md](https://github.com/LoliLin/RSSHub/blob/master/Plugins.md)
+
 明知道开了坑也没生态但还要开的是不是应该叫傻子呢 (小声
 
 ## 参与我们
 
 如果有任何想法或需求，可以在 [issue](https://github.com/LoliLin/RSSHub/issues) 中告诉我们，同时我们欢迎各种 pull requests
+
+因为作者是辣鸡高中生，所以各种消息回复得比较慢，还望谅解
 
 ### 提交新的 RSS 内容
 
@@ -23,7 +27,7 @@ RSSHub 是一个轻量、易于扩展的 RSS 生成器，可以给任何奇奇�
 
 2.  在 [/plugins/分类名](https://github.com/LoliLin/RSSHub/blob/master/plugins) 中添加获取 RSS 内容的脚本
 
-3.  更新文档: [/README.md](https://github.com/LoliLin/RSSHub/blob/master/README.md)
+3.  更新文档: [/Plugins.md](https://github.com/LoliLin/RSSHub/blob/master/Plugins.md)
 
 ### 插件格式
 
@@ -85,7 +89,7 @@ $data = Cache::getCache($md5,function () use ($var1)
 
 若在处理过程中遇到错误，直接抛出 `RSSHub\Lib\Exception` 异常即可，第一位输入参数为消息，第二位为等级(可选 `warning` 以及 `error`)
 
-输出时会自动添加 RSS header， 请勿重复添加
+输出时会自动添加 XML header， 请勿重复添加
 
 ## 部署
 
@@ -98,4 +102,4 @@ rewrite ^(.*)$ /index.php?s=$1 last;
 
 ## Demo
 
-[演示站](https://rss.xiaolin.in)，可随意使用 (有大佬帮忙写个首页前端嘛
+[演示站](https://rss.xiaolin.in)，可随意使用
