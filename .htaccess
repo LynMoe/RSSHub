@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks -Multiviews
+  RewriteEngine On
+
+  RewriteRule ^(.*)$ index.php?s=$1 [QSA,PT,L]
+</IfModule>
