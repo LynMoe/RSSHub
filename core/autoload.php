@@ -62,13 +62,19 @@ getPlugins(__DIR__ . '/../plugins',$plugins);
 $routes = [];
 foreach ($plugins as $plugin)
 {
-    require_once $plugin;
+    if (substr($plugin,-4) == '.php')
+        require_once $plugin;
+    else
+        continue;
 
     $pluginGroup = explode('/',$plugin)[count(explode('/',$plugin)) - 2];
 
     $pluginName = 'RSSHub\\Plugins\\' . $pluginGroup . '\\' . substr(explode('/',$plugin)[count(explode('/',$plugin)) - 1],0,-4);
     $tmpClass = new $pluginName();
-    $tmpInfo = $tmpClass->_info;
+    if (isset($tmpClass->_info))
+        $tmpInfo = $tmpClass->_info;
+    else
+        continue;
 
     foreach ($tmpInfo['routes'] as $routeName => $routeValue)
     {
