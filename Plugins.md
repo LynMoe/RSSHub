@@ -26,7 +26,7 @@ RSSHub 是一个轻量、易于扩展的 RSS 生成器, 可以给任何奇奇怪
   - id:
     - 小说 id, 可在对应小说页 URL 中找到
 
-  ::: tip 提示
+::: tip 提示
 
 由于笔趣阁网站有多个, 各站点小说对应的小说 id 不同. 此 feed 只对应在[`www.biquge5200.com`](https://www.biquge5200.com/)中的小说 id.
 
