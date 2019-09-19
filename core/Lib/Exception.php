@@ -13,9 +13,9 @@ class Exception extends \Exception
     public function __construct($msg,$level = 'warning')
     {
         die(XML::toRSS([
-            'title' => 'RSSHub Error',
-            'description' => '[' . strtoupper($level) . '] ' . $msg,
-            'link' => Config::getConfig()['general']['siteURL'],
+            'title' => 'RSSHub for PHPer',
+            'description' => Config::getConfig()['general']['siteURL'],
+            'link' => '[' . strtoupper($level) . '] ' . $msg,
             'items' => [],
         ]));
     }
