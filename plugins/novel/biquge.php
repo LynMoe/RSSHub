@@ -50,7 +50,7 @@ class biquge
         $request = mb_convert_encoding($request, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
         $crawler = new Crawler();
         $crawler->addHtmlContent($request);
-        $content = $crawler->filterXPath('//*[@id="content"]')->text();
+        $content = $crawler->filterXPath('//*[@id="content"]')->html();
         return $content;
     }
 }
