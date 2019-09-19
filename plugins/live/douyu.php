@@ -12,6 +12,11 @@ class douyu
     ];
 
     public static function douyu($id) {
+        
+        if ($id==null) {
+            throw new Exception('id不能为空','error');
+        }
+        
         $md5 = md5("http://open.douyucdn.cn/api/RoomApi/room/{$id}");
         $data = Cache::getCache($md5,function () use ($id) {
             $curl = new Curl();
@@ -23,11 +28,14 @@ class douyu
 
             return $data;
         });
-
         $data = json_decode($data,true);
+        if ($data['error'] != 0) {
+            throw new Exception($data['data'],'error');
+        }
         $list = [
             'title' => $data['data']['owner_name'].'的斗鱼直播间',
             'description' => $data['data']['owner_name'].'的斗鱼直播间',
+            'link' => "https://www.douyu.com/{$id}/",
         ];
         if ($data['data']['online'] != 0) {
             $list['items'] = [
