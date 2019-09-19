@@ -12,7 +12,11 @@ class huya
     ];
 
     public static function huya($id) {
-
+        
+        if ($id==null) {
+            throw new Exception('id不能为空','error');
+        }
+        
         $curl = new Curl();
         $curl->setReferrer("https://www.huya.com/{$id}/");
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER,0);
@@ -22,6 +26,11 @@ class huya
         preg_match("/<title>(.*?)<\/title>/", $html, $title);
         preg_match("/\"startTime\":\"(.*?)\"/", $html, $date);
         preg_match("/\"isOn\":(.*?),/", $html, $isOn);
+        
+        if ($date==null) {
+            throw new Exception('直播间不存在','error');
+        }
+        
         $list = [
             'title' => $title[1],
             'description' => $title[1],
