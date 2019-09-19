@@ -100,6 +100,7 @@ $data = Cache::getCache($md5,function () use ($var1)
 ```nginx
 rewrite ^(.*)$ /index.php?s=$1 last;
 ```
+5.重命名.env.example为.env
 
 ## Demo
 
