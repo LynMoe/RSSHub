@@ -96,11 +96,11 @@ $data = Cache::getCache($md5,function () use ($var1)
 1.  `git clone https://github.com/LoliLin/RSSHub.git`
 2.  `composer install`
 3. 设置运行目录为 `public`
-4.  配置伪静态规则 (nginx 规则如下)
+4.重命名.env.example为.env
+5.  配置伪静态规则 (nginx 规则如下)
 ```nginx
 rewrite ^(.*)$ /index.php?s=$1 last;
 ```
-5.重命名.env.example为.env
 
 ## Demo
 
