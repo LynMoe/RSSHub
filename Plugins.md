@@ -27,6 +27,17 @@ RSSHub 是一个轻量、易于扩展的 RSS 生成器, 可以给任何奇奇怪
     - 小说 id, 可在对应小说页 URL 中找到
     - 提示：由于笔趣阁网站有多个, 各站点小说对应的小说 id 不同. 此 feed 只对应在[`www.biquge5200.com`](https://www.biquge5200.com/)中的小说 id.
 
+### 博客
+
+#### handsome主题博客
+
+- 作者: iLay1678
+- 路径: `/blog/handsome/:url`
+  - 示例: [/blog/handsome/ifking.cn](https://rss.ifking.cn/blog/handsome/ifking.cn)
+- 参数说明:
+  - url:
+    - 博客地址, 不带http或https前缀
+    - 提示：必须是采用typecho系统且使用handsome主题的博客.
 
 ## 社交媒体
 
