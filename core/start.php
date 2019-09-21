@@ -15,7 +15,7 @@ error_reporting(0);
  */
 
 $query = explode('/',$_GET['s']);
-
+header('Content-Type: text/xml; charset=utf-8');
 if (isset($query[1]) && isset(RH_ROUTES[$query[1]])) //TODO: Change `is_array` to `isset` because of PHPStorm's bug.
 {
     $group = RH_ROUTES[$query[1]];
@@ -75,7 +75,6 @@ if (isset($data))
             'items' => [],
         ]));
     }
-    header('Content-Type: text/xml; charset=utf-8');
     echo $result;
 } else
     die(\RSSHub\Lib\XML::toRSS([
